@@ -1205,6 +1205,16 @@ class DatabaseMySqlSchemaGrammarTest extends TestCase
         $this->assertSame('alter table `users` add `foo` mediumtext not null', $statements[0]);
     }
 
+    public function testAddingLongText()
+    {
+        $blueprint = new Blueprint('users');
+        $blueprint->longText('foo');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertSame('alter table `users` add `foo` longtext not null', $statements[0]);
+    }
+
     public function testDropAllTables()
     {
         $statement = $this->getGrammar()->compileDropAllTables(['alpha', 'beta', 'gamma']);
