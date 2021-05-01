@@ -436,6 +436,16 @@ class DatabaseMySqlSchemaGrammarTest extends TestCase
         $this->assertSame('alter table `users` add `id` smallint unsigned not null auto_increment primary key', $statements[0]);
     }
 
+    public function testAddingMediumIncrementingID()
+    {
+        $blueprint = new Blueprint('users');
+        $blueprint->mediumIncrements('id');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertSame('alter table `users` add `id` mediumint unsigned not null auto_increment primary key', $statements[0]);
+    }
+
     public function testAddingID()
     {
         $blueprint = new Blueprint('users');
