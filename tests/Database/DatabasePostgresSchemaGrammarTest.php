@@ -977,6 +977,23 @@ class DatabasePostgresSchemaGrammarTest extends TestCase
         $this->assertSame('alter table "geo" add column "coordinates" geography(multipolygon, 4326) not null', $statements[0]);
     }
 
+    public function testAddingChar()
+    {
+        $blueprint = new Blueprint('users');
+        $blueprint->char('foo');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertSame('alter table "users" add column "foo" char(255) not null', $statements[0]);
+
+        $blueprint = new Blueprint('users');
+        $blueprint->char('foo', 100);
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertSame('alter table "users" add column "foo" char(100) not null', $statements[0]);
+    }
+
     public function testCreateDatabase()
     {
         $connection = $this->getConnection();

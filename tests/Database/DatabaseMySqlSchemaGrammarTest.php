@@ -1178,6 +1178,23 @@ class DatabaseMySqlSchemaGrammarTest extends TestCase
         $this->assertSame("alter table `users` add `foo` varchar(255) not null comment 'Escape \\' when using words like it\\'s'", $statements[0]);
     }
 
+    public function testAddingChar()
+    {
+        $blueprint = new Blueprint('users');
+        $blueprint->char('foo');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertSame('alter table `users` add `foo` char(255) not null', $statements[0]);
+
+        $blueprint = new Blueprint('users');
+        $blueprint->char('foo', 100);
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertSame('alter table `users` add `foo` char(100) not null', $statements[0]);
+    }
+
     public function testDropAllTables()
     {
         $statement = $this->getGrammar()->compileDropAllTables(['alpha', 'beta', 'gamma']);

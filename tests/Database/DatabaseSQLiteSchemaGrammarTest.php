@@ -831,6 +831,16 @@ class DatabaseSQLiteSchemaGrammarTest extends TestCase
         $this->assertSame('alter table "geo" add column "coordinates" multipolygon not null', $statements[0]);
     }
 
+    public function testAddingChar()
+    {
+        $blueprint = new Blueprint('users');
+        $blueprint->char('foo');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertSame('alter table "users" add column "foo" varchar not null', $statements[0]);
+    }
+
     public function testAddingGeneratedColumn()
     {
         $blueprint = new Blueprint('products');
