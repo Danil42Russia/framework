@@ -308,6 +308,16 @@ class DatabaseSqlServerSchemaGrammarTest extends TestCase
         $this->assertSame('alter table "users" add "id" int identity primary key not null', $statements[0]);
     }
 
+    public function testAddingIntegerIncrementingID()
+    {
+        $blueprint = new Blueprint('users');
+        $blueprint->integerIncrements('id');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertSame('alter table "users" add "id" int identity primary key not null', $statements[0]);
+    }
+
     public function testAddingTinyIncrementingID()
     {
         $blueprint = new Blueprint('users');
