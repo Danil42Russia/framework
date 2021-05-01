@@ -302,6 +302,16 @@ class DatabasePostgresSchemaGrammarTest extends TestCase
         $this->assertSame('alter table "users" add column "id" serial primary key not null', $statements[0]);
     }
 
+    public function testAddingTinyIncrementingID()
+    {
+        $blueprint = new Blueprint('users');
+        $blueprint->tinyIncrements('id');
+        $statements = $blueprint->toSql($this->getConnection(), $this->getGrammar());
+
+        $this->assertCount(1, $statements);
+        $this->assertSame('alter table "users" add column "id" smallserial primary key not null', $statements[0]);
+    }
+
     public function testAddingSmallIncrementingID()
     {
         $blueprint = new Blueprint('users');
